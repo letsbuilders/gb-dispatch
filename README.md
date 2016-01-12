@@ -1,6 +1,7 @@
-# GbDispatch
+# GBDispatch
 
-Library allows easy to dispatch block of code for queues.
+Library allows to easily dispatch block of code for queues.
+It is inspired by Grand Central Dispatch behaviour.
 
 ## Installation
 
