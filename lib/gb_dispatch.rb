@@ -1,6 +1,6 @@
 require "gb_dispatch/version"
 
-module GbDispatch
+module GBDispatch
   def dispatch_async_on_queue(queue)
 
   end

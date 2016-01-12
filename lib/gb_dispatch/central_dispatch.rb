@@ -4,14 +4,14 @@ class CentralDispatch
   include Singleton
 
   def dispatch_async(block=nil)
-    GbDispatch::Manager.instance.run_async_on_queue GbDispatch::Manager.instance.get_queue do
+    GBDispatch::Manager.instance.run_async_on_queue GBDispatch::Manager.instance.get_queue do
       block ? block.call : yield
     end
   end
 
   class << self
     def dispatch_async(block=nil)
-      GbDispatch::Manager.instance.run_async_on_queue GbDispatch::Manager.instance.get_queue do
+      GBDispatch::Manager.instance.run_async_on_queue GBDispatch::Manager.instance.get_queue do
         block ? block.call : yield
       end
     end

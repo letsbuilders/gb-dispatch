@@ -1,7 +1,7 @@
 require 'singleton'
 require 'gb_dispatch/runner'
 require 'gb_dispatch/queue'
-module GbDispatch
+module GBDispatch
   class Manager
     include Singleton
 
@@ -14,12 +14,12 @@ module GbDispatch
       queue
     end
 
-    # @param queue [GbDispatch::Queue]
+    # @param queue [GBDispatch::Queue]
     def run_async_on_queue(queue)
       queue.async.perform ->() { yield }
     end
 
-    # @param queue [GbDispatch::Queue]
+    # @param queue [GBDispatch::Queue]
     def run_sync_on_queue(queue)
       future = queue.future.perform ->() { yield }
       future.value

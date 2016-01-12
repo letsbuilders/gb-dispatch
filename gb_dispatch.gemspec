@@ -5,7 +5,7 @@ require 'gb_dispatch/version'
 
 Gem::Specification.new do |spec|
   spec.name = "gb_dispatch"
-  spec.version = GbDispatch::VERSION
+  spec.version = GBDispatch::VERSION
   spec.authors = ["Kacper Kawecki"]
   spec.email = ["kacper@geniebelt.com"]
   spec.summary = %q{TODO: Write a short summary. Required.}
