@@ -38,5 +38,10 @@ module GBDispatch
       yield
     end
   end
+
+  # Setup logger. By default it use Celluloid logger
+  # @param logger [Logger]
+  def self.logger=(logger)
+    Celluloid.logger = logger
+  end
 end
-require 'gb_dispatch/central_dispatch'
