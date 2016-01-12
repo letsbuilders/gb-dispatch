@@ -1,6 +1,6 @@
 # GbDispatch
 
-TODO: Write a gem description
+Library allows easy to dispatch block of code for queues.
 
 ## Installation
 
@@ -20,7 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To dispatch asynchronously
+
+```ruby
+GBDispatch.dispatch_async_on_queue :my_queue do
+    puts 'my code here'
+end
+```
+
+for synchronous execution
+
+```ruby
+GBDispatch.dispatch_sync_on_queue :my_queue do
+    puts 'my code here'
+end
+```
 
 ## Contributing
 
