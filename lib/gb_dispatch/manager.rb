@@ -6,7 +6,7 @@ module GBDispatch
     include Singleton
 
     def get_queue(name=:default)
-      queue = Celluloid::Actor[name]
+      queue = Celluloid::Actor[name.to_sym]
       unless queue
         supervisor = Queue.supervise_as name, name, @pool
         queue = supervisor.actors.first
