@@ -23,7 +23,7 @@ module GBDispatch
           Opbeat.capture_exception(e)
         end
         Celluloid.logger.error "Failed execution of queue #{name} with error #{e.message}"
-        condition.call(e)
+        condition.call(e) if condition
         raise e
       end
     end

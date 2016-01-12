@@ -1,16 +1,21 @@
 require 'celluloid'
-require 'celluloid/logging'
 module GBDispatch
   class Queue
     include Celluloid
-    # include Celluloid::Internals::Logger
+
+    # @return [String] queue name
     attr_reader :name
 
+    # @param name [String] queue name, should be the same as is register in Celluloid
+    # @param thread_pool [Celluloid::Pool] pool of runners for executing code.
     def initialize(name, thread_pool)
       @name = name
       @thread_pool = thread_pool
     end
 
+    #
+    # @param block [Proc]
+    # @yield if there is no block given it yield without param.
     def perform(block=nil)
       Thread.current[:name] ||= name
       if defined?(Rails) && defined?(ActiveRecord::Base)
@@ -27,7 +32,11 @@ module GBDispatch
         thread_block = block ? block : ->() { yield }
       end
       exclusive do
-        @thread_pool.execute thread_block
+        begin
+          @thread_pool.execute thread_block, name: name
+        rescue Exception => e
+          return e
+        end
       end
     end
   end
