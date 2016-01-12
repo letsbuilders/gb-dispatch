@@ -4,3 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'celluloid'
+group :test do
+  gem 'rspec'
+  gem 'simplecov', :require => false
+end

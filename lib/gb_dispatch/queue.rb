@@ -1,6 +1,6 @@
 require 'celluloid'
 require 'celluloid/logging'
-module GbDispatch
+module GBDispatch
   class Queue
     include Celluloid
     # include Celluloid::Internals::Logger
