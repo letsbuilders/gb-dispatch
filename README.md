@@ -36,9 +36,16 @@ GBDispatch.dispatch_sync_on_queue :my_queue do
 end
 ```
 
+### Using with Rails
+
+If you are using Rails, all blocks are wrapped in connection pool, 
+so you don't need to worry about creating and removing new connections.
+Only thing you need to do, is to increase connection pool size
+by number of cores of your machine.
+
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/gb_dispatch/fork )
+1. Fork it ( https://github.com/GenieBelt/gb_dispatch/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
