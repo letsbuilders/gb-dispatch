@@ -1,5 +1,6 @@
 require 'gb_dispatch/version'
 require 'gb_dispatch/manager'
+require 'celluloid'
 
 # Library to dispatch block on queues.
 # It is inspired by GCD but implementation is based on Celluloid.
@@ -43,5 +44,9 @@ module GBDispatch
   # @param logger [Logger]
   def self.logger=(logger)
     Celluloid.logger = logger
+  end
+
+  at_exit do
+    GBDispatch::Manager.instance.exit
   end
 end

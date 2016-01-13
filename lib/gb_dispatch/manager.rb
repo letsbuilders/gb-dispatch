@@ -6,7 +6,8 @@ module GBDispatch
     include Singleton
 
     def get_queue(name=:default)
-      queue = Celluloid::Actor[name.to_sym]
+      name = name.to_sym
+      queue = Celluloid::Actor[name]
       unless queue
         supervisor = Queue.supervise_as name, name, @pool
         queue = supervisor.actors.first
@@ -23,6 +24,13 @@ module GBDispatch
     def run_sync_on_queue(queue)
       future = queue.future.perform ->() { yield }
       future.value
+    end
+
+    def exit
+      @pool.terminate
+      Celluloid::Actor.all.each  do |actor|
+        actor.terminate if actor.alive?
+      end
     end
 
     private
