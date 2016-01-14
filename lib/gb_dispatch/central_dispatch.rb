@@ -16,5 +16,4 @@ class CentralDispatch
       end
     end
   end
-
 end

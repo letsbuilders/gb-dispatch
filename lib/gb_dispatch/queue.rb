@@ -13,9 +13,12 @@ module GBDispatch
       @thread_pool = thread_pool
     end
 
+    # Perform given block
     #
+    # If used with rails it will wrap block with connection pool.
     # @param block [Proc]
     # @yield if there is no block given it yield without param.
+    # @return [Object, Exception] returns value of executed block or exception if block execution failed.
     def perform(block=nil)
       Thread.current[:name] ||= name
       if defined?(Rails) && defined?(ActiveRecord::Base)
@@ -37,6 +40,17 @@ module GBDispatch
         rescue Exception => e
           return e
         end
+      end
+    end
+
+    # Perform block after given period
+    # @param time [Fixnum]
+    # @param block [Proc]
+    # @yield if there is no block given it yield without param.
+    def perform_after(time, block=nil)
+      after(time) do
+        block = ->(){ yield } unless block
+        self.async.perform block
       end
     end
   end

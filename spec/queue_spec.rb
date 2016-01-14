@@ -75,6 +75,22 @@ describe GBDispatch::Queue do
     end
   end
 
+  context 'after' do
+    it 'should bea bale to run block of code after specified time' do
+      a = []
+      queue = GBDispatch::Queue.new(:test, @pool)
+      queue.perform_after 0.5, ->() { a << rand() }
+      queue.perform_after 0.7, ->() { a << rand() }
+      sleep 0.4
+      expect(a.count).to eq 0
+      sleep 0.2
+      expect(a.count).to eq 1
+      sleep 0.2
+      expect(a.count).to eq 2
+      queue.terminate
+    end
+  end
+
   context 'rails' do
     before(:each) do
       class Rails

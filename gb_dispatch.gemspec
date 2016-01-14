@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Kacper Kawecki']
   spec.email = ['kacper@geniebelt.com']
   spec.summary = %q{GCD emulation for ruby}
-  spec.description = %q{Allows to dispatch block of code for queues}
+  spec.description = %q{Grand central dispatch emulation for ruby. It allows to easily run asynchronous code. }
   spec.homepage = 'https://github.com/GenieBelt/gb-dispatch'
   spec.license = 'MIT'
 
