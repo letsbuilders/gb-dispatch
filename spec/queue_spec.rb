@@ -55,7 +55,7 @@ describe GBDispatch::Queue do
       queue.async.perform ->() do
         (11..20).each { |x| a << x }
       end
-      sleep(0.06)
+      sleep(0.08)
       expect(a).to eq (0..20).to_a
       queue.terminate
     end
