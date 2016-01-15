@@ -38,7 +38,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.6)
-  celluloid (<= 0.15.2)
+  celluloid (~> 0.15.2)
   gb_dispatch!
   rake (~> 10.0)
   rspec
