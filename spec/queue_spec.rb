@@ -55,7 +55,7 @@ describe GBDispatch::Queue do
       queue.async.perform ->() do
         (11..20).each { |x| a << x }
       end
-      sleep(0.06)
+      sleep(0.08)
       expect(a).to eq (0..20).to_a
       queue.terminate
     end
@@ -71,6 +71,22 @@ describe GBDispatch::Queue do
       end
       sleep(0.05)
       expect(a).to eq :bar
+      queue.terminate
+    end
+  end
+
+  context 'after' do
+    it 'should bea bale to run block of code after specified time' do
+      a = []
+      queue = GBDispatch::Queue.new(:test, @pool)
+      queue.perform_after 0.5, ->() { a << rand() }
+      queue.perform_after 0.7, ->() { a << rand() }
+      sleep 0.4
+      expect(a.count).to eq 0
+      sleep 0.2
+      expect(a.count).to eq 1
+      sleep 0.2
+      expect(a.count).to eq 2
       queue.terminate
     end
   end

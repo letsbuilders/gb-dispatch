@@ -19,12 +19,18 @@ Or install it yourself as:
 
     $ gem install gb_dispatch
 
+Then in your script
+
+```ruby
+require 'gb_dispatch'
+```
+
 ## Usage
 
 To dispatch asynchronously
 
 ```ruby
-GBDispatch.dispatch_async_on_queue :my_queue do
+GBDispatch.dispatch_async :my_queue do
     puts 'my code here'
 end
 ```
@@ -32,7 +38,16 @@ end
 for synchronous execution
 
 ```ruby
-GBDispatch.dispatch_sync_on_queue :my_queue do
+my_result = GBDispatch.dispatch_sync :my_queue do
+    puts 'my code here'
+end
+```
+
+for delay execution
+
+```ruby
+delay = 4.5 #seconds
+GBDispatch.dispatch_after delay, :my_queue do
     puts 'my code here'
 end
 ```
@@ -43,6 +58,27 @@ If you are using Rails, all blocks are wrapped in connection pool,
 so you don't need to worry about creating and removing new connections.
 Only thing you need to do, is to increase connection pool size
 by number of cores of your machine.
+
+## How it works
+
+### Queues
+
+For each created queue there is a new thread created. However this threads
+are used only for scheduling purpose. All code execution happens on execution pool.
+
+Queues ensure order of execution, but they don't guarantee that all blocks from one queue 
+will be executed on the same thread. 
+
+### Execution pool
+
+This is pool of thread where your code will be executed. 
+Amount of threads in the pool match the amount of cores of your machine 
+(except if you have only one core, there will be 2 threads).
+
+### Exceptions
+
+GBDispatch is designed in the way, that if there is exception thrown it will not crash the whole app/script.
+All exceptions will be logged. If you use +#dispatch_sync+ method, thrown exception will be returned as a result of your block.
 
 ## Contributing
 
