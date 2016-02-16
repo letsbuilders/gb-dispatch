@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    gb_dispatch (0.0.2)
-      celluloid (~> 0.17.3)
+    gb_dispatch (0.0.3)
+      celluloid (~> 0.15.2)
 
 GEM
   remote: https://rubygems.org/
@@ -55,6 +55,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.6)
+  celluloid (~> 0.15.2)
   gb_dispatch!
   rake (~> 10.0)
   rspec

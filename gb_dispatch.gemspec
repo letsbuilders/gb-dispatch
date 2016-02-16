@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Kacper Kawecki']
   spec.email = ['kacper@geniebelt.com']
   spec.summary = %q{GCD emulation for ruby}
-  spec.description = %q{Grand central dispatch emulation for ruby. It allows to easily run asynchronous code. }
+  spec.description = %q{Grand central dispatch (GCD) emulation for ruby. It allows to easily run asynchronous code. }
   spec.homepage = 'https://github.com/GenieBelt/gb-dispatch'
   spec.license = 'MIT'
 
@@ -21,5 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'celluloid', '~> 0.17.3'
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.4.0'
+  spec.add_development_dependency 'rspec', '~> 3.4'
+  spec.add_development_dependency 'simplecov'
 end

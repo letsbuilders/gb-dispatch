@@ -1,0 +1,7 @@
+v0.0.3
+    - Change celluloid dependency beck to 0.15.2 - newer versions are unstable
+v0.0.2
+    - Changed celluloid dependency for more open.
+    - Add disptach_after()
+v0.0.1
+    First version
