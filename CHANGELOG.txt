@@ -1,3 +1,5 @@
+v0.0.4
+    - Compatible with celluloid version 17.3
 v0.0.3
     - Change celluloid dependency beck to 0.15.2 - newer versions are unstable
 v0.0.2
