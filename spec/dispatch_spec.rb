@@ -13,7 +13,7 @@ describe GBDispatch do
       a << 2
     end
     expect(a.empty?).to be_truthy
-    sleep(0.02)
+    sleep(0.03)
     expect(a).to eq [1, 2]
   end
 
@@ -73,13 +73,13 @@ describe GBDispatch do
       a << 1
     end
     expect(a.empty?).to be_truthy
-    sleep(0.15)
+    sleep(0.2)
     expect(a).to eq [1]
   end
 
   it 'should return proper queue' do
     queue = GBDispatch.get_queue :test
-    expect(queue.name).to eq :test
     expect(queue).to be_a GBDispatch::Queue
+    expect(queue.name).to eq :test
   end
 end

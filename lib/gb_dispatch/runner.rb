@@ -1,4 +1,4 @@
-require 'celluloid'
+require 'celluloid/current'
 module GBDispatch
   class Runner
     include Celluloid

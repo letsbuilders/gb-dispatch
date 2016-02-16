@@ -1,4 +1,4 @@
-require 'celluloid'
+require 'celluloid/current'
 module GBDispatch
   class Queue
     include Celluloid
@@ -11,6 +11,7 @@ module GBDispatch
     def initialize(name, thread_pool)
       @name = name
       @thread_pool = thread_pool
+      @executing = false
     end
 
     # Perform given block
@@ -34,13 +35,19 @@ module GBDispatch
       else
         thread_block = block ? block : ->() { yield }
       end
-      exclusive do
+      while @executing
+        sleep(0.0001)
+      end
+      #exclusive do
         begin
+          @executing = true
           @thread_pool.execute thread_block, name: name
         rescue Exception => e
           return e
+        ensure
+          @executing = false
         end
-      end
+      #end
     end
 
     # Perform block after given period
@@ -52,6 +59,10 @@ module GBDispatch
         block = ->(){ yield } unless block
         self.async.perform block
       end
+    end
+
+    def to_s
+      self.name.to_s
     end
   end
 end

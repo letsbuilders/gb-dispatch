@@ -14,12 +14,12 @@ module GBDispatch
     # Remember that for each allocated queue, there is new thread allocated.
     # @param name [String, Symbol] if not passed, default queue will be returned.
     # @return [GBDispatch::Queue]
-    def get_queue(name=:default)
+    def get_queue(name=:default_queue)
       name = name.to_sym
       queue = Celluloid::Actor[name]
       unless queue
-        supervisor = Queue.supervise_as name, name, @pool
-        queue = supervisor.actors.first
+        Queue.supervise as: name, args: [name, @pool]
+        queue = Celluloid::Actor[name]
       end
       queue
     end
@@ -36,6 +36,7 @@ module GBDispatch
     #     puts 'Delayed Hello World!'
     #   end
     def run_async_on_queue(queue)
+      raise ArgumentError.new 'Queue must be GBDispatch::Queue' unless queue.is_a? GBDispatch::Queue
       queue.async.perform ->() { yield }
     end
 
@@ -52,6 +53,7 @@ module GBDispatch
     #     42
     #   end
     def run_sync_on_queue(queue)
+      raise ArgumentError.new 'Queue must be GBDispatch::Queue' unless queue.is_a? GBDispatch::Queue
       future = queue.future.perform ->() { yield }
       future.value
     end
@@ -67,6 +69,7 @@ module GBDispatch
     #   end
     #
     def run_after_on_queue(time, queue)
+      raise ArgumentError.new 'Queue must be GBDispatch::Queue' unless queue.is_a? GBDispatch::Queue
       queue.perform_after time, ->(){ yield }
     end
 

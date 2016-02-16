@@ -1,6 +1,6 @@
 require 'gb_dispatch/version'
 require 'gb_dispatch/manager'
-require 'celluloid'
+
 
 # Library to dispatch block on queues.
 # It is inspired by GCD but implementation is based on Celluloid.
@@ -24,7 +24,7 @@ module GBDispatch
   # @param queue [Symbol, GBDispatch::Queue] queue object or name
   # @yield block to execute
   def self.dispatch_async(queue)
-    queue = GBDispatch::Manager.instance.get_queue(queue) unless queue.is_a? GBDispatch::Queue
+    queue = get_queue(queue) unless queue.is_a? GBDispatch::Queue
     GBDispatch::Manager.instance.run_async_on_queue queue do
       yield
     end
@@ -34,7 +34,7 @@ module GBDispatch
   # @param queue [Symbol, GBDispatch::Queue] queue object or name
   # @yield block to execute
   def self.dispatch_sync(queue)
-    queue = GBDispatch::Manager.instance.get_queue(queue) unless queue.is_a? GBDispatch::Queue
+    queue = get_queue(queue) unless queue.is_a? GBDispatch::Queue
     GBDispatch::Manager.instance.run_sync_on_queue queue do
       yield
     end
@@ -46,8 +46,8 @@ module GBDispatch
   # @param queue [Symbol, GBDispatch::Queue] queue object or name
   # @yield block to execute
   def self.dispatch_after(delay, queue)
-    queue = GBDispatch::Manager.instance.get_queue(queue) unless queue.is_a? GBDispatch::Queue
-    GBDispatch::Manager.instance.run_async_on_queue queue do
+    queue = get_queue(queue) unless queue.is_a? GBDispatch::Queue
+    GBDispatch::Manager.instance.run_after_on_queue delay, queue do
       yield
     end
   end
@@ -63,9 +63,5 @@ module GBDispatch
     alias_method :dispatch_sync_on_queue, :dispatch_sync
     alias_method :dispatch_async_on_queue, :dispatch_async
     alias_method :dispatch_after_on_queue, :dispatch_after
-  end
-
-  at_exit do
-    GBDispatch::Manager.instance.exit
   end
 end
