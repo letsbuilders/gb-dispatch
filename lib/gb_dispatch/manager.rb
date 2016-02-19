@@ -16,17 +16,17 @@ module GBDispatch
     # @return [GBDispatch::Queue]
     def get_queue(name=:default_queue)
       name = name.to_sym
-      queue = Celluloid::Actor[name]
+      queue = @queues[name]
       unless queue
-        Queue.supervise as: name, args: [name, @pool]
-        queue = Celluloid::Actor[name]
+        @queues[name] = GBDispatch::Queue.new(name)
+        queue = @queues[name]
       end
       queue
     end
 
     # Run asynchronously given block of code on given queue.
     #
-    # This is a proxy for {GBDispatch::Queue#perform} method.
+    # This is a proxy for {GBDispatch::Queue#perform_now} method.
     # @param queue [GBDispatch::Queue] queue on which block will be executed
     # @return [nil]
     # @example
@@ -37,12 +37,12 @@ module GBDispatch
     #   end
     def run_async_on_queue(queue)
       raise ArgumentError.new 'Queue must be GBDispatch::Queue' unless queue.is_a? GBDispatch::Queue
-      queue.async.perform ->() { yield }
+      queue.async.perform_now ->() { yield }
     end
 
     # Run given block of code on given queue and wait for result.
     #
-    # This method use {GBDispatch::Queue#perform} and wait for result.
+    # This method use {GBDispatch::Queue#perform_now} and wait for result.
     # @param queue [GBDispatch::Queue] queue on which block will be executed
     # @example sets +my_result+ to 42
     #   my_queue = GBDispatch::Manager.instance.get_queue :my_queue
@@ -54,7 +54,7 @@ module GBDispatch
     #   end
     def run_sync_on_queue(queue)
       raise ArgumentError.new 'Queue must be GBDispatch::Queue' unless queue.is_a? GBDispatch::Queue
-      future = queue.future.perform ->() { yield }
+      future = queue.await.perform_now ->() { yield }
       future.value
     end
 
@@ -76,17 +76,18 @@ module GBDispatch
 
     # :nodoc:
     def exit
-      @pool.terminate
-      Celluloid::Actor.all.each  do |actor|
-        actor.terminate if actor.alive?
+      @queues.each_key do |name|
+        @queues[name] = nil
       end
+      Runner.pool.shutdown
+      Runner.pool.wait_for_termination
     end
 
     private
 
     # :nodoc:
     def initialize
-      @pool = Runner.pool
+      @queues = Concurrent::Map.new
     end
   end
 end
