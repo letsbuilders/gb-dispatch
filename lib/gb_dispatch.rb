@@ -56,7 +56,11 @@ module GBDispatch
   # Setup logger. By default it use Celluloid logger
   # @param logger [Logger]
   def self.logger=(logger)
-    Celluloid.logger = logger
+    @logger = logger
+  end
+
+  def logger
+    @logger ||= Logger.new(STDOUT)
   end
 
   class << self

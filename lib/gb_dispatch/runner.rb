@@ -40,7 +40,7 @@ module GBDispatch
               Opbeat.set_context extra: {queue: name} if name
               Opbeat.capture_exception(e)
             end
-            GBDispatch.logger.error "Failed execution of queue #{name} with error #{e.message}" if GBDispatch.logger
+            GBDispatch.logger.error "Failed execution of queue #{name} with error #{e.message}"
             raise e
           end
         end
