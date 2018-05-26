@@ -65,6 +65,7 @@ describe GBDispatch do
     GBDispatch.dispatch_after 0.1, :test do
       a << 1
     end
+    sleep(0.01)
     expect(a.empty?).to be_truthy
     sleep(0.15)
     expect(a).to eq [1]
@@ -75,6 +76,7 @@ describe GBDispatch do
     GBDispatch.dispatch_after_on_queue 0.1, :test do
       a << 1
     end
+    sleep(0.01)
     expect(a.empty?).to be_truthy
     sleep(0.2)
     expect(a).to eq [1]
