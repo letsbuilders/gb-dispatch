@@ -59,7 +59,7 @@ module GBDispatch
     @logger = logger
   end
 
-  def logger
+  def self.logger
     @logger ||= Logger.new(STDOUT)
   end
 
