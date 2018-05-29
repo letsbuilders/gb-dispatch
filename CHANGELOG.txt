@@ -1,3 +1,5 @@
+v0.1.1
+    - Fix bug with logger.
 v0.1.0
     - Added support for rails 5 - fixed deadlock issues.
     - Added force_new_connection method to ActiveRecord connection pool for rails >= 5
