@@ -85,12 +85,21 @@ describe GBDispatch::Queue do
   context 'rails' do
     before(:each) do
       class Rails
+        module VERSION
+          MAJOR = 4
+        end
       end
       module ActiveRecord
         class Base
           class DummyConnectionPool
             def with_connection
               yield
+            end
+
+            def force_new_connection
+              with_connection do
+                yield
+              end
             end
           end
 

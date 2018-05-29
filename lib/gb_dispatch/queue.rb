@@ -21,13 +21,22 @@ module GBDispatch
     def perform_now(block=nil)
       Thread.current[:name] ||= name
       if defined?(Rails) && defined?(ActiveRecord::Base)
+        require 'gb_dispatch/active_record_patch'
         thread_block = ->() do
-          begin
-            ActiveRecord::Base.connection_pool.with_connection do
-              block ? block.call : yield
+          if Rails::VERSION::MAJOR < 5
+            begin
+              ActiveRecord::Base.connection_pool.force_new_connection do
+                block ? block.call : yield
+              end
+            ensure
+              ActiveRecord::Base.clear_active_connections!
             end
-          ensure
-            ActiveRecord::Base.clear_active_connections!
+          else
+            Rails.application.executor.wrap do
+              ActiveRecord::Base.connection_pool.force_new_connection do
+                block ? block.call : yield
+              end
+            end
           end
         end
       else
