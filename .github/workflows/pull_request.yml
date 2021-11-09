@@ -1,0 +1,49 @@
+name: Pull Request check
+on:
+  - pull_request
+  - workflow_dispatch
+env:
+  RACK_ENV: test
+  ImageOS: ubuntu20
+jobs:
+  test:
+    name: Run test
+    runs-on: ubuntu-latest
+    env:
+      SIMPLECOV: json
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-${{ matrix.ruby }}
+      - name: Install gems
+        run: |
+          gem install bundler
+          bundle install --with development test --deployment --jobs 16
+      - name: Runs tests
+        run: |
+          bundle exec rspec -f j -o rspec_results.json -f p
+      - name: RSpec Report
+        if: always()
+        uses: SonicGarden/rspec-report-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          json-path: rspec_results.json
+      - name: Simplecov Report
+        uses: aki77/simplecov-report-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          failedThreshold: 80
