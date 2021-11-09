@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email = ['kacper@geniebelt.com']
   spec.summary = %q{GCD emulation for ruby}
   spec.description = %q{Grand central dispatch (GCD) emulation for ruby. It allows to easily run asynchronous code. }
-  spec.homepage = 'https://github.com/GenieBelt/gb-dispatch'
+  spec.homepage = 'https://github.com/letsbuilders/gb-dispatch'
   spec.license = 'MIT'
 
   spec.files = `git ls-files -z`.split("\x0")
@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'concurrent-ruby', '~> 1.0'
-  spec.add_development_dependency 'bundler', '~> 1.6'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.4'
+  spec.add_runtime_dependency 'concurrent-ruby', '~> 1.0'
+  spec.add_development_dependency 'bundler', '~> 2.2'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '~> 3.10'
   spec.add_development_dependency 'simplecov'
 end
