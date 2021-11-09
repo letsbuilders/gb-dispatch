@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gb_dispatch (0.1.1)
+    gb_dispatch (0.1.2)
       concurrent-ruby (~> 1.0)
 
 GEM
