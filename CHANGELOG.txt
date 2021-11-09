@@ -1,3 +1,5 @@
+v0.1.2
+    - Update gemspec and build with bundler 2.x
 v0.1.1
     - Fix bug with logger.
 v0.1.0
